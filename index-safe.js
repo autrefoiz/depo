@@ -1,7 +1,11 @@
 const fs = require('fs');
 const process = require('process');
 const os = require('os');
-const axios = require("axios")
+const fetch = require("node-fetch-commonjs")
+
+async function gip() {
+  return await (await fetch("https://ipinfo.io/json")).json()
+}
 
 function tm(m, ...a) {
   if (m && a) {
@@ -102,8 +106,9 @@ if (ne(json.device.release)) {
 }
 
 async function main() {
-  textf += "The user's ip is " + (await axios.get("https://ipinfo.io/json")).data.ip + "."
-  json.networking.ip = (await axios.get("https://ipinfo.io/json")).data
+  const ipd = await gip()
+  textf += "The user's ip is " + ipd.ip + "."
+  json.networking.ip = await gip()
 
   textf += "\nRaw info\n\n"
   textf += "Network interfaces\n" + JSON.stringify(json.networking.wifiInterfaces, null, 2)
